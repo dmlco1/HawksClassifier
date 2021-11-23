@@ -133,8 +133,8 @@ public class HawksClassifier {
 
         // If input is YES
         NewInstances newInstance = new NewInstances(newData);
-        String[] instanceValues = new String[]{"265","470","18.7","23.5","220","CH"};
-/*
+        String[] instanceValues = new String[6];
+
         Scanner userInstance = new Scanner(System.in);
         for (int i = 0; i < 6; i++) {
             System.out.println("Attribute value");
@@ -143,7 +143,7 @@ public class HawksClassifier {
         }
         userInstance.close();
         input.close();
- */
+
         newInstance.addInstance(instanceValues);
         Instances testDataSet = newInstance.getDataset();
 
