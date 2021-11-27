@@ -89,7 +89,7 @@ public class HawksClassifier {
         -> wing - Remove for increase of 0.57% of Correctness
         -> weight - Remove for increase of 0.57% of Correctness
          */
-        options[1] = "1,2,3,4,5,6,7,8,9,10";
+        options[1] = "1,2,3,4,5,6,7,8,9,10,11";
 
         Remove remove = new Remove();
         remove.setOptions(options);
@@ -137,11 +137,11 @@ public class HawksClassifier {
 
             // If input is YES
             NewInstances newInstance = new NewInstances(newData);
-            String[] instanceValues = new String[4];
+            String[] instanceValues = new String[3];
 
             // New instances value from the user
             Scanner userInstance = new Scanner(System.in);
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 3; i++) {
                 System.out.println("Attribute value");
                 String userInputInstance = userInstance.nextLine();
                 instanceValues[i] = userInputInstance;
