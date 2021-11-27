@@ -22,8 +22,8 @@ public class HawksClassifier {
         arrfFile.write("@relation hawks\n\n");
 
         // insert first block of numeric attributes
-        String[] components1 = new String[] {"id", "month", "day", "year"};
-        for (String s: components1){
+        String[] components1 = new String[]{"id", "month", "day", "year"};
+        for (String s : components1) {
             arrfFile.write("@attribute " + s + " NUMERIC\n");
         }
 
@@ -34,8 +34,8 @@ public class HawksClassifier {
         arrfFile.write("@attribute sex {F, M}\n");
 
         // insert second block of numeric attributes
-        String[] components2 = new String[] {"wing", "weight", "culmen", "hallux", "tail"};
-        for (String s: components2){
+        String[] components2 = new String[]{"wing", "weight", "culmen", "hallux", "tail"};
+        for (String s : components2) {
             arrfFile.write("@attribute " + s + " NUMERIC\n");
         }
 
@@ -52,7 +52,7 @@ public class HawksClassifier {
          -> , , to ,?,
         */
         int lineCounter = 0;
-        while (scanner.hasNextLine() && (lineCounter <= 890)){
+        while (scanner.hasNextLine() && (lineCounter <= 890)) {
             String line = scanner.nextLine();
             String dotReplaced = line.replace(",", ".");
             String commaReplaced = dotReplaced.replace(";", ",");
@@ -86,8 +86,10 @@ public class HawksClassifier {
         -> releaseTime - Not relevant to classify Hawk's specie
         -> age - A large part of the entries do not have a value
         -> sex - A large part of the entries do not have a value
+        -> wing - Remove for increase of 0.57% of Correctness
+        -> weight - Remove for increase of 0.57% of Correctness
          */
-        options[1] = "1,2,3,4,5,6,7,8";
+        options[1] = "1,2,3,4,5,6,7,8,9,10";
 
         Remove remove = new Remove();
         remove.setOptions(options);
@@ -115,50 +117,52 @@ public class HawksClassifier {
         System.out.println("Precision : " + eval.weightedPrecision() + "\n");
         System.out.println("F1-Score : " + eval.weightedFMeasure() + "\n");
 
-        Scanner input = new Scanner(System.in);
-        System.out.println("Do you want to test with a new Instance? [Yes/No]");
-        String userResponse = input.nextLine();
+        while (true) {
 
-        // invalid input
-        if (!userResponse.equalsIgnoreCase("No") && !userResponse.equalsIgnoreCase("Yes")){
-            System.err.println("Wrong form of input, try again");
-            System.exit(1);
-        }
+            Scanner input = new Scanner(System.in);
+            System.out.println("Do you want to test with a new Instance? [Yes/No]");
+            String userResponse = input.nextLine();
 
-        // if input is NO
-        if (userResponse.equalsIgnoreCase("No")){
-            System.out.println("Terminating....");
-            System.exit(0);
-        }
+            // invalid input
+            if (!userResponse.equalsIgnoreCase("No") && !userResponse.equalsIgnoreCase("Yes")) {
+                System.err.println("Wrong form of input, try again");
+                System.exit(1);
+            }
 
-        // If input is YES
-        NewInstances newInstance = new NewInstances(newData);
-        String[] instanceValues = new String[6];
+            // if input is NO
+            if (userResponse.equalsIgnoreCase("No")) {
+                System.out.println("Terminating....");
+                System.exit(0);
+            }
 
-        Scanner userInstance = new Scanner(System.in);
-        for (int i = 0; i < 6; i++) {
-            System.out.println("Attribute value");
-            String userInputInstance = userInstance.nextLine();
-            instanceValues[i] = userInputInstance;
-        }
-        userInstance.close();
-        input.close();
+            // If input is YES
+            NewInstances newInstance = new NewInstances(newData);
+            String[] instanceValues = new String[4];
 
-        newInstance.addInstance(instanceValues);
-        Instances testDataSet = newInstance.getDataset();
+            // New instances value from the user
+            Scanner userInstance = new Scanner(System.in);
+            for (int i = 0; i < 4; i++) {
+                System.out.println("Attribute value");
+                String userInputInstance = userInstance.nextLine();
+                instanceValues[i] = userInputInstance;
+            }
 
-        for (int i = 0; i < testDataSet.numInstances(); i++) {
-            Instance instance = testDataSet.instance(i);
-            System.out.println(instance);
-            String actual = instance.stringValue(instance.numAttributes() - 1);
-            System.out.println(actual);
+            newInstance.addInstance(instanceValues);
+            Instances testDataSet = newInstance.getDataset();
 
-            double predict = classifier.classifyInstance(instance);
-            System.out.println(predict);
-            String pred = testDataSet.classAttribute().value((int)(predict));
-            System.out.println(pred);
+            for (int i = 0; i < testDataSet.numInstances(); i++) {
+                Instance instance = testDataSet.instance(i);
+                System.out.println(instance);
+                String actual = instance.stringValue(instance.numAttributes() - 1);
+                System.out.println(actual);
 
-            System.out.println(actual + "\t" + pred);
+                double predict = classifier.classifyInstance(instance);
+                System.out.println(predict);
+                String pred = testDataSet.classAttribute().value((int) (predict));
+                System.out.println(pred);
+
+                System.out.println(actual + "\t" + pred);
+            }
         }
     }
 }
