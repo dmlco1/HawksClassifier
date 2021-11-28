@@ -88,6 +88,7 @@ public class HawksClassifier {
         -> sex - A large part of the entries do not have a value
         -> wing - Remove for increase of 0.57% of Correctness
         -> weight - Remove for increase of 0.57% of Correctness
+        -> culmen - Remove so it doesn't cause overfitting
          */
         options[1] = "1,2,3,4,5,6,7,8,9,10,11";
 
